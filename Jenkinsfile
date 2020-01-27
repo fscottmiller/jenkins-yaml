@@ -10,28 +10,39 @@ def getEnvironment(yaml) {
 def runStages(yaml) {
     if (yaml.keySet().contains('stages')) {
         yaml['stages'].each {
-            stage("${it['name']}") {
-                echo "${it['command']}"
+            container("${it['name']}") {
+                stage("${it['name']}") {
+                    sh "${it['command']}"
+                }
             }
         }
     }
 }
  
-// TODO: no parameters for now
-// set parameters based on the parameters root key
-// def getParameters(yaml) {
-//     if (yaml.keySet().contains("parameters")) {
-//         def parameterList = []
-//         yaml['parameters'].each {
-//             parameterList += "${yaml['type']}"(name: "${yaml['name']}")
-//         }
-//         return parameterList
-//     }
-// }
+def getKube(yaml) {
+    def images = []
+    // [ 'name' : "${tool}", "image" : "${image}:${version}", 'ttyEnabled' : true, 'command' : 'cat' ]
+    yaml['stages'].each {
+        if (it.keySet().contains('image')) {
+            def img = ['ttyEnabled': true, 'command': 'cat']
+            img['name'] = it['image']
+            img['img'] = it['image']
+            images += img
+        }
+    }
+    return images
+}
 
 node {
     checkout scm
     def main = readYaml file: "main.yaml"
     getEnvironment main
-    runStages main
+    def options = [:]
+    options['containers'] = getKube main
+    echo "${options}" //debug
+    podTemplate(options) {
+        node(POD_LABEL) {
+            runStages main
+        }
+    }
 }

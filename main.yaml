@@ -1,9 +1,6 @@
 environment:
   foo: bar
   env-var-2: some-var
-# parameters:
-#   - name: var
-#     type: string
 triggers:
   cron: '*****'
 stages:
