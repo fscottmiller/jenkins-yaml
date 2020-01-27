@@ -1,8 +1,9 @@
 def getEnvironment(yaml) {
     if (yaml.keySet().contains("environment")) {
         println "environment found"
-        yaml["environment"].each {
-            key, value -> println "${key}: ${value}"
+        yaml["environment"].each { key, value -> 
+            println "${key}: ${value}"
+            env."${key}" = value
         }
     }
 }
@@ -22,4 +23,5 @@ node {
     def main = readYaml file: "main.yaml"
     getEnvironment main
     getParameters main    
+    println "foo: ${env.foo}"
 }
