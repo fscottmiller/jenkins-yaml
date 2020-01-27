@@ -1,0 +1,12 @@
+environment:
+  foo: bar
+parameters:
+  - name: var
+    type: string
+triggers:
+  cron: '*****'
+stages:
+  - name: stage 1
+    image: python
+    command: python --version
+
