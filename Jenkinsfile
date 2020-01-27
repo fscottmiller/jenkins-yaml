@@ -7,21 +7,31 @@ def getEnvironment(yaml) {
     }
 }
 
-// set parameters based on the parameters root key
-def getParameters(yaml) {
-    if (yaml.keySet().contains("parameters")) {
-        def parameterList = []
-        yaml['parameters'].each {
-            parameterList += "${yaml['type']}"(name: "${yaml['name']}")
+def runStages(yaml) {
+    if (yaml.keySet().contains('stages')) {
+        yaml['stages'].each {
+            stage("${it['name']}") {
+                echo "${it['command']}"
+            }
         }
-        return parameterList
     }
 }
+ 
+// TODO: no parameters for now
+// set parameters based on the parameters root key
+// def getParameters(yaml) {
+//     if (yaml.keySet().contains("parameters")) {
+//         def parameterList = []
+//         yaml['parameters'].each {
+//             parameterList += "${yaml['type']}"(name: "${yaml['name']}")
+//         }
+//         return parameterList
+//     }
+// }
 
 node {
     checkout scm
     def main = readYaml file: "main.yaml"
     getEnvironment main
-    def tmp = getParameters main    
-    echo "${tmp}"
+    runStages main
 }
