@@ -1,20 +1,20 @@
+// set env variables based on the environment root key
 def getEnvironment(yaml) {
     if (yaml.keySet().contains("environment")) {
-        println "environment found"
         yaml["environment"].each { key, value -> 
-            println "${key}: ${value}"
             env."${key}" = value
         }
     }
 }
 
+// set parameters based on the parameters root key
 def getParameters(yaml) {
     if (yaml.keySet().contains("parameters")) {
-        println "parameters found"
+        def parameterList = []
         yaml['parameters'].each {
-            println "name: ${it['name']}"
-            println "type: ${it['type']}"
+            parameterList += "${yaml['type']}"(name: "${yaml['name']}")
         }
+        return parameterList
     }
 }
 
@@ -22,6 +22,6 @@ node {
     checkout scm
     def main = readYaml file: "main.yaml"
     getEnvironment main
-    getParameters main    
-    println "foo: ${env.foo}"
+    def tmp = getParameters main    
+    echo "${tmp}"
 }
