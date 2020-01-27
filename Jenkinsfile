@@ -7,11 +7,18 @@ def getEnvironment(yaml) {
     }
 }
 
+def getParameters(yaml) {
+    if (yaml.keySet().contains("parameters")) {
+        println "parameters found"
+        yaml['parameters'].each {
+            key, value -> println "${it.key}: ${it.value}"
+        }
+    }
+}
+
 node {
     checkout scm
-    echo "a"
     def main = readYaml file: "main.yaml"
-    echo "b"
     getEnvironment main
-    echo "c"
+    getParameters main    
 }
