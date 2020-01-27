@@ -2,7 +2,7 @@ def getEnvironment(yaml) {
     if (yaml.keySet().contains("environment")) {
         println "environment found"
         yaml["environment"].each {
-            key, value -> println "${it.key}: ${it.value}"
+            key, value -> println "${key}: ${value}"
         }
     }
 }
@@ -11,7 +11,7 @@ def getParameters(yaml) {
     if (yaml.keySet().contains("parameters")) {
         println "parameters found"
         yaml['parameters'].each {
-            key, value -> println "${it.key}: ${it.value}"
+            key, value -> println "${key}: ${value}"
         }
     }
 }
