@@ -10,4 +10,5 @@ def getEnvironment(yaml) {
 node {
     checkout scm
     def main = readYaml file: "main.yaml"
+    getEnvironment main
 }
