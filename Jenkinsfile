@@ -11,7 +11,8 @@ def getParameters(yaml) {
     if (yaml.keySet().contains("parameters")) {
         println "parameters found"
         yaml['parameters'].each {
-            key, value -> println "${key}: ${value}"
+            println "name: ${it['name']}"
+            println "type: ${it['type']}"
         }
     }
 }
