@@ -9,6 +9,9 @@ def getEnvironment(yaml) {
 
 node {
     checkout scm
+    echo "a"
     def main = readYaml file: "main.yaml"
+    echo "b"
     getEnvironment main
+    echo "c"
 }
